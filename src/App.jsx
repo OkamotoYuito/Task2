@@ -6,11 +6,17 @@ export const App = () => {
   const [title, setTitle] = useState("");
   const [time, setTime] = useState(0);
   const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadRecords = async () => {
-      const data = await fetchRecords();
-      setRecords(data || []);
+      try {
+        const data = await fetchRecords();
+        setRecords(data || []);
+      } catch (err) {
+      } finally {
+        setIsLoading(false);
+      }
     };
     loadRecords();
   }, []);
@@ -37,28 +43,33 @@ export const App = () => {
     setError(false);
   };
 
-  return (
-    <>
-      <h1>学習記録一覧</h1>
-      <div>
-        学習内容
-        <input type="text" value={title} onChange={onChangeTitle} />
-      </div>
-      <div>
-        学習時間
-        <input type="number" value={time} onChange={onChangeTime} />
-        時間
-      </div>
-      <div>入力されている学習内容：{title}</div>
-      <div>入力されている学習時間：{time}時間</div>
-      {records.map((record, index) => (
-        <div key={index}>
-          {record.title} {record.time}時間
+  if (isLoading) {
+    return <div>Loading...</div>;
+  } else {
+    return (
+      <>
+        {isLoading && <h1>Loading</h1>}
+        <h1>学習記録一覧</h1>
+        <div>
+          学習内容
+          <input type="text" value={title} onChange={onChangeTitle} />
         </div>
-      ))}
-      <button onClick={onClickResister}>登録</button>
-      <div>合計時間：{totalTime} / 1000 (h)</div>
-      {error && <p style={{ color: "red" }}>入力内容にエラーがあります</p>}
-    </>
-  );
+        <div>
+          学習時間
+          <input type="number" value={time} onChange={onChangeTime} />
+          時間
+        </div>
+        <div>入力されている学習内容：{title}</div>
+        <div>入力されている学習時間：{time}時間</div>
+        {records.map((record, index) => (
+          <div key={index}>
+            {record.title} {record.time}時間
+          </div>
+        ))}
+        <button onClick={onClickResister}>登録</button>
+        <div>合計時間：{totalTime} / 1000 (h)</div>
+        {error && <p style={{ color: "red" }}>入力内容にエラーがあります</p>}
+      </>
+    );
+  }
 };
