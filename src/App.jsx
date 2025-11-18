@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
-import { tableFetch } from "./database/TableFetch";
+import { fetchRecords } from "./database/fetchRecords";
 
 export const App = () => {
-  useEffect(() => {
-    const getRecords = async () => {
-      const records = await tableFetch();
-      console.log(records);
-    };
-    getRecords();
-  }, []);
-
   const [records, setRecords] = useState([]);
   const [title, setTitle] = useState("");
   const [time, setTime] = useState(0);
   const [error, setError] = useState(false);
+
+  useEffect(() => {
+    const loadRecords = async () => {
+      const data = await fetchRecords();
+      setRecords(data || []);
+    };
+    loadRecords();
+  }, []);
+
   const totalTime = records.reduce(
     (total, item) => total + parseInt(item.time),
     0
