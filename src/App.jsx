@@ -20,7 +20,7 @@ export const App = () => {
       }
     };
     loadRecords();
-  }, []);
+  }, [records]);
 
   const totalTime = records.reduce(
     (total, item) => total + parseInt(item.time),
@@ -51,6 +51,13 @@ export const App = () => {
     setError(false);
   };
 
+  const onClickDelete = async (id) => {
+    const { error } = await supabase.from("study-record").delete().eq("id", id);
+    if (error) {
+      console.log("Delete Error: ", error);
+    }
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   } else {
@@ -69,9 +76,10 @@ export const App = () => {
         </div>
         <div>入力されている学習内容：{title}</div>
         <div>入力されている学習時間：{time}時間</div>
-        {records.map((record, index) => (
-          <div key={index}>
+        {records.map((record) => (
+          <div key={record.id}>
             {record.title} {record.time}時間
+            <button onClick={() => onClickDelete(record.id)}>x</button>
           </div>
         ))}
         <button onClick={onClickResister}>登録</button>
