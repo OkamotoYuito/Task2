@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchRecords } from "./database/fetchRecords";
+import { supabase } from "./database/supabase";
 
 export const App = () => {
   const [records, setRecords] = useState([]);
@@ -34,10 +35,17 @@ export const App = () => {
     setTime(e.target.value);
   };
 
-  const onClickResister = () => {
+  const onClickResister = async () => {
     if (title === "" || time <= 0) return setError(true);
-    const newRecords = [...records, { title, time }];
-    setRecords(newRecords);
+    const { error } = await supabase
+      .from("study-record")
+      .insert({ title, time });
+    if (error) {
+      console.log("Insert Error: ", error);
+      setError(true);
+    }
+    const data = await fetchRecords();
+    setRecords(data || []);
     setTitle("");
     setTime(0);
     setError(false);
