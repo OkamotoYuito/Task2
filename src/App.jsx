@@ -37,9 +37,15 @@ export const App = () => {
 
   const onClickResister = async () => {
     if (title === "" || time <= 0) return setError(true);
-    await supabase.from("study-record").insert({ title, time });
-    const newRecords = [...records, { title, time }];
-    setRecords(newRecords);
+    const { error } = await supabase
+      .from("study-record")
+      .insert({ title, time });
+    if (error) {
+      console.log("Insert Error: ", error);
+      setError(true);
+    }
+    const data = await fetchRecords();
+    setRecords(data || []);
     setTitle("");
     setTime(0);
     setError(false);
