@@ -26,4 +26,4 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Deploy
-        run: npm run deploy
+        run: firebase deploy
