@@ -6,24 +6,22 @@ on:
       - main
 
 jobs:
-  build:
+  build_and_deploy:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
 
       - name: install
         run: npm install
 
       - name: Build
         run: npm run build
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: checkout
-        uses: actions/checkout@v4
 
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
