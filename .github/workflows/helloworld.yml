@@ -1,10 +1,19 @@
-name: Hello World
+name: CI/CD Actions
 
 on:
-  workflow_dispatch:
+  push
+  # branches:
+  #   - main
 
 jobs:
-  say_hello:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Hello World!"
+      - name: Build
+      - run: npm run build
+
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Deploy
+  #     - run: npm deploy firebase
