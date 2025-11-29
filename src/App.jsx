@@ -56,6 +56,8 @@ export const App = () => {
     if (error) {
       console.log("Delete Error: ", error);
     }
+    const data = await fetchRecords();
+    setRecords(data || []);
   };
 
   if (isLoading) {
@@ -64,14 +66,24 @@ export const App = () => {
     return (
       <>
         {isLoading && <h1>Loading</h1>}
-        <h1>学習記録一覧</h1>
+        <h1 data-testid="title">学習記録一覧</h1>
         <div>
           学習内容
-          <input type="text" value={title} onChange={onChangeTitle} />
+          <input
+            data-testid="title-input"
+            type="text"
+            value={title}
+            onChange={onChangeTitle}
+          />
         </div>
         <div>
           学習時間
-          <input type="number" value={time} onChange={onChangeTime} />
+          <input
+            data-testid="time-input"
+            type="number"
+            value={time}
+            onChange={onChangeTime}
+          />
           時間
         </div>
         <div>入力されている学習内容：{title}</div>
@@ -82,7 +94,9 @@ export const App = () => {
             <button onClick={() => onClickDelete(record.id)}>x</button>
           </div>
         ))}
-        <button onClick={onClickResister}>登録</button>
+        <button data-testid="register-button" onClick={onClickResister}>
+          登録
+        </button>
         <div>合計時間：{totalTime} / 1000 (h)</div>
         {error && <p style={{ color: "red" }}>入力内容にエラーがあります</p>}
       </>
