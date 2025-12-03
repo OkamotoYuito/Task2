@@ -3,10 +3,10 @@ name: Auto Build and Deploy
 on:
   push:
     branches:
-      - main
+      - "**"
 
 jobs:
-  build_and_deploy:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -20,17 +20,8 @@ jobs:
       - name: install
         run: npm install
 
-      - name: Build
-        run: npm run build
+      - name: test
+        run: npm run test
         env:
           VITE_SUPABASE_URL: ${{secrets.VITE_SUPABASE_URL}}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{secrets.VITE_SUPABASE_PUBLISHABLE_KEY}}
-
-      - name: Install Firebase CLI
-        run: npm install -g firebase-tools
-
-      - name: Deploy
-        run: firebase deploy --project study-record-fca36 --token "${{ secrets.FIREBASE_TOKEN }}"
-
-      - name: test
-        run: npm run test
