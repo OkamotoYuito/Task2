@@ -3,5 +3,8 @@ export default {
   moduleNameMapper: {
     "\\.(css|less)$": "identity-obj-proxy",
   },
-  setupFilesAfterEnv: ["./jest.setup.js"],
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
+  transform: {
+    "^.+\\.jsx?$": "babel-jest",
+  },
 };
