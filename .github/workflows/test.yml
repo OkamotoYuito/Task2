@@ -1,0 +1,30 @@
+name: Auto Build and Deploy
+
+on:
+  push:
+    branches:
+      - "**"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: install
+        run: npm install
+
+      - name: Build
+        run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{secrets.VITE_SUPABASE_URL}}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{secrets.VITE_SUPABASE_PUBLISHABLE_KEY}}
+
+      - name: test
+        run: npm run test
