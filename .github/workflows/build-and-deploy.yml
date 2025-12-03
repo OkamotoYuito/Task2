@@ -31,3 +31,6 @@ jobs:
 
       - name: Deploy
         run: firebase deploy --project study-record-fca36 --token "${{ secrets.FIREBASE_TOKEN }}"
+
+      - name: test
+        run: npm run test
