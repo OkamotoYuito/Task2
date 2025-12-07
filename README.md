@@ -95,7 +95,3 @@ task2/
 ├── Makefile
 └── package.json
 ```
-
-## ライセンス
-
-MIT
